@@ -22,6 +22,20 @@
             color: white;
             min-height: 100vh;
             overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Cursor glow effect */
+        .cursor-glow {
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(251, 146, 60, 0.4) 0%, rgba(249, 115, 22, 0.2) 30%, transparent 60%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            transition: left 0.1s ease, top 0.1s ease;
         }
 
         .title-font {
@@ -410,6 +424,25 @@
     <script type="text/babel">
         const { useState, useEffect } = React;
 
+        // Cursor glow effect
+        useEffect(() => {
+            const glow = document.createElement('div');
+            glow.className = 'cursor-glow';
+            document.body.appendChild(glow);
+
+            const handleMouseMove = (e) => {
+                glow.style.left = e.clientX + 'px';
+                glow.style.top = e.clientY + 'px';
+            };
+
+            document.addEventListener('mousemove', handleMouseMove);
+
+            return () => {
+                document.removeEventListener('mousemove', handleMouseMove);
+                glow.remove();
+            };
+        }, []);
+
         // Configuration
         const API_URL = 'http://localhost:3001'; // Change this for production
 
@@ -464,7 +497,7 @@
                 const params = new URLSearchParams(window.location.search);
                 if (params.get('auth') === 'success') {
                     alert(`Welcome, ${params.get('username')}! Your games are being synced.`);
-window.history.replaceState({}, '', '/bullet-royale-frontend/');
+                    window.history.replaceState({}, '', '/');
                 }
             }, []);
 
