@@ -464,7 +464,7 @@
                 const params = new URLSearchParams(window.location.search);
                 if (params.get('auth') === 'success') {
                     alert(`Welcome, ${params.get('username')}! Your games are being synced.`);
-                    window.history.replaceState({}, '', '/');
+window.history.replaceState({}, '', '/bullet-royale-frontend/');
                 }
             }, []);
 
